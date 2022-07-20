@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import pdfplumber
 import re
+from os import path
 
 from datetime import datetime
 import csv
@@ -11,14 +12,20 @@ header = ["Booking date", "Description", "Amount"]
 parsed_total_amount = 0
 calculated_total_amount = 0
 transactions_count = 0
+csv_file = ""
 
 
 def parse_transactions(fname):
-    global calculated_total_amount, parsed_total_amount, transactions_count
+    global calculated_total_amount, parsed_total_amount, transactions_count, csv_file
     billing_year = ""
     pdf = pdfplumber.open(fname)
 
-    with open("nordea-finnair.csv", "w", encoding="UTF8") as f:
+    csv_file = path.join(
+        path.normpath(path.dirname(fname)),
+        path.splitext(path.basename(fname))[0] + ".csv",
+    )
+
+    with open(csv_file, "w", encoding="UTF8") as f:
         writer = csv.writer(f, delimiter=";")
         writer.writerow(header)
 
@@ -57,7 +64,8 @@ def main():
 
     print("Expected Amount:     {:.2f}".format(parsed_total_amount))
     print("Calculated Amount:   {:.2f}".format(calculated_total_amount))
-    print("Total Transactions:   {}".format(transactions_count))
+    print("Total Transactions:  {}".format(transactions_count))
+    print("Written to:          {}".format(csv_file))
 
 
 main()
