@@ -1,9 +1,0 @@
-#!/usr/bin/env nix-shell
-#! nix-shell -i bash -p poetry python3
-
-STARTDIR=`pwd`
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-cd $SCRIPT_DIR
-poetry install --no-root
-poetry run python parse.py $STARTDIR/$1
-cd $STARTDIR

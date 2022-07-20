@@ -8,6 +8,9 @@ let
     python = "python39";
   };
 in
-mach-nix.mkPythonShell {
+mach-nix.buildPythonApplication {
+  pname = "nordea-finnair-parser";
+  version = "1.0.0";
   requirements = builtins.readFile ./requirements.txt;
+  src = ./.;
 }
