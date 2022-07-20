@@ -1,0 +1,11 @@
+#+title: Parser for the Nordea Finnair Plus Mastercard
+
+The monthly [[https://www.nordeafinance.fi/en/personal/services/consumercredit/finnair-plus-mastercard.html][Finnair Plus Mastercard]] transactions are sent as a PDF and Nordea's
+support told me they will not provide a CSV format upon request.
+
+The parser converts the transactions from the invoicer's breakdown ~pdf~ into
+~csv~ format, so the transactions can be imported into [[https://github.com/beancount/beancount][beancount]] using [[https://hledger.org/][hledger]]'s
+importer.
+
+It's a plain csv, so as long as the service or program accepts csv files to
+import transactions you'll be able to convert it.
