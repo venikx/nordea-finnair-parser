@@ -15,6 +15,8 @@ for page in pdf.pages:
 
     for line in lines:
         # print(line)
+        if t := re.search("\s+OSTOT YHTEENSÄ\s+([\d\s]+.+\d{2})", line):
+            parsed_total_amount = float(t.group(1).replace(" ", ""))
         if m := re.search(
             "\ALASKUTUSKAUSI\s*\d{2}.\d{2}.\d{2}\W*(\d{2}.\d{2}.\d{2})", line
         ):
@@ -26,7 +28,7 @@ for page in pdf.pages:
             transaction_date = t.group(1) + billing_year
             transaction_description = t.group(2).strip()
             transaction_amount = t.group(3)
-            # calculated_total_amount += float(transaction_amount)
+            calculated_total_amount += float(transaction_amount)
             print(transaction_date, transaction_description, transaction_amount)
 
-print(calculated_total_amount)
+print(calculated_total_amount, parsed_total_amount)
