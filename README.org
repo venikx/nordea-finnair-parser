@@ -9,3 +9,31 @@ importer.
 
 It's a plain csv, so as long as the service or program accepts csv files to
 import transactions you'll be able to convert it.
+
+* Status
+The parser has been tested on the Nordea Finnair Plus Mastercard invoicer's
+breakdown from June 2022.
+
+* Usage
+Clone it first, and ~cd~ into the folder.
+- SSH: ~git clone git@github.com:venikx/nordea-finnair-parser.git~
+- HTTPS: ~git clone https://github.com/venikx/nordea-finnair-parser.git~
+
+** Nix(OS)
+I've added a ~default.nix~ which you should be able to run from anywhere on your
+computer, as the dependencies are already built. Internally it uses pip, via
+mach-nix to build the dependency tree.
+
+#+begin_src shell
+nix-build
+./result/bin/parse.py 20220630-nordea-finnair.pdf
+#+end_src
+
+** Plain ~pip~
+I'm not too familiar with the Python ecosystem and especially package management
+(like pip), so let me know if this doesn't work
+
+#+begin_src shell
+pip install -t requirements.txt
+python parse.py 20220630-nordea-finnair.pdf
+#+end_src
