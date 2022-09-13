@@ -32,6 +32,6 @@ I'm not too familiar with the Python ecosystem and especially package management
 (like pip), so let me know if this doesn't work
 
 #+begin_src shell
-pip install -t requirements.txt
+pip install -r requirements.txt
 python parse.py 20220630-nordea-finnair.pdf
 #+end_src
