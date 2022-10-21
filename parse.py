@@ -43,13 +43,13 @@ def parse_transactions(fname):
                     billing_year = m.group(1).split(".")[2]
 
                 if t := re.search(
-                    "(\d{2}.\d{2}.)\s+\d{2}.\d{2}.\s+\d{12}\s+(.+)\s+(\d+.\d+)\Z", line
+                    "(\d{2}.\d{2}.)\s+\d{2}.\d{2}.\s+\d{12}\s+(.+)\s+(\d+.\d+)(-?)\Z", line
                 ):
                     transaction_date = datetime.strptime(
                         t.group(1) + billing_year, "%d.%m.%y"
                     ).strftime("%Y-%m-%d")
                     transaction_description = t.group(2).strip()
-                    transaction_amount = t.group(3)
+                    transaction_amount = t.group(4) + t.group(3)
                     writer.writerow(
                         [transaction_date, transaction_description, transaction_amount]
                     )
