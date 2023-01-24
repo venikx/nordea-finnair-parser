@@ -17,7 +17,8 @@ csv_file = ""
 
 def parse_transactions(fname):
     global calculated_total_amount, parsed_total_amount, transactions_count, csv_file
-    billing_year = ""
+    bill_starting_year = ""
+    bill_ending_year = ""
     pdf = pdfplumber.open(fname)
 
     csv_file = path.join(
@@ -38,15 +39,20 @@ def parse_transactions(fname):
                     parsed_total_amount = float(t.group(1).replace(" ", ""))
 
                 if m := re.search(
-                    "\ALASKUTUSKAUSI\s*\d{2}.\d{2}.\d{2}\W*(\d{2}.\d{2}.\d{2})", line
+                    "\ALASKUTUSKAUSI\s*(\d{2}.\d{2}.\d{2})\W*(\d{2}.\d{2}.\d{2})", line
                 ):
-                    billing_year = m.group(1).split(".")[2]
+                    bill_starting_year = int(m.group(1).split(".")[2])
+                    bill_ending_year = int(m.group(2).split(".")[2])
 
                 if t := re.search(
                     "(\d{2}.\d{2}.)\s+\d{2}.\d{2}.\s+\d{12}\s+(.+)\s+(\d+.\d+)(-?)\Z", line
                 ):
+                    transaction_month = t.group(1).split(".")[1]
+                    transaction_year = bill_starting_year if bill_starting_year == bill_ending_year else (
+                        bill_starting_year if transaction_month == "12" else bill_ending_year
+                    )
                     transaction_date = datetime.strptime(
-                        t.group(1) + billing_year, "%d.%m.%y"
+                        t.group(1) + str(transaction_year), "%d.%m.%y"
                     ).strftime("%Y-%m-%d")
                     transaction_description = t.group(2).strip()
                     transaction_amount = t.group(4) + t.group(3)
