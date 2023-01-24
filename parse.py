@@ -48,9 +48,9 @@ def parse_transactions(fname):
                     "(\d{2}.\d{2}.)\s+\d{2}.\d{2}.\s+\d{12}\s+(.+)\s+(\d+.\d+)(-?)\Z", line
                 ):
                     transaction_month = t.group(1).split(".")[1]
-                    transaction_year = bill_starting_year if bill_starting_year == bill_ending_year else (
-                        bill_starting_year if transaction_month == "12" else bill_ending_year
-                    )
+                    transaction_year = bill_starting_year if (
+                        bill_starting_year == bill_ending_year or transaction_month == "12"
+                    ) else bill_ending_year
                     transaction_date = datetime.strptime(
                         t.group(1) + str(transaction_year), "%d.%m.%y"
                     ).strftime("%Y-%m-%d")
